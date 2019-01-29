@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode
+@ToString
 @Getter
 @Setter
 @Entity(name = "TB_BOARD")

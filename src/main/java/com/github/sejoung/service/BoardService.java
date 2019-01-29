@@ -16,46 +16,45 @@ import java.util.function.Supplier;
 @Service
 public class BoardService {
 
-	private final BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
-	BoardService(BoardRepository boardRepository){
-		this.boardRepository = boardRepository;
+    BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
 
-	}
+    }
 
-	public Board save(BoardParam boardParam) {
+    public Board save(BoardParam boardParam) {
 
-		var bdOptional = boardRepository.findById(boardParam.getBoardId());
-		Supplier<Board> boardSupplier = Board::new;
-		var board = bdOptional.orElseGet(boardSupplier);
+        var bdOptional = boardRepository.findById(boardParam.getBoardId());
+        Supplier<Board> boardSupplier = Board::new;
+        var board = bdOptional.orElseGet(boardSupplier);
 
-		board.setTitle(boardParam.getBoardTitle());
-		board.setContents(boardParam.getBoardContents());
-		if(board.getHit()>0){
-			board.setHit(board.getHit());
-		}
+        board.setTitle(boardParam.getBoardTitle());
+        board.setContents(boardParam.getBoardContents());
+        if (board.getHit() > 0) {
+            board.setHit(board.getHit());
+        }
 
-		return boardRepository.save(board);
-	}
+        return boardRepository.save(board);
+    }
 
-	public Optional<Board> detail(BoardParam boardParam) {
-		var bdOptional = boardRepository.findById(boardParam.getBoardId());
+    public Optional<Board> detail(BoardParam boardParam) {
+        var bdOptional = boardRepository.findById(boardParam.getBoardId());
 
-		bdOptional.ifPresent(board -> {
-			board.setHit(board.getHit()+1);
-			boardRepository.save(board);
-		});
+        bdOptional.ifPresent(board -> {
+            board.setHit(board.getHit() + 1);
+            boardRepository.save(board);
+        });
 
-		return bdOptional;
-	}
-
-
-	public Page<Board> list(Pageable pageable) {
+        return bdOptional;
+    }
 
 
-		return boardRepository.findAll(pageable);
-	}
+    public Page<Board> list(Pageable pageable) {
 
+
+        return boardRepository.findAll(pageable);
+    }
 
 
 }
